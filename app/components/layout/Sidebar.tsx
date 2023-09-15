@@ -13,7 +13,7 @@ const Sidebar = async () => {
     {
       icon: BsHouseFill,
       label: 'Home',
-      href: '/',
+      href: '/home',
     },
     {
       icon: BsBellFill,

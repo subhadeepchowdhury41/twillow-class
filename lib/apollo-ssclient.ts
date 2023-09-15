@@ -2,7 +2,7 @@ import { HttpLink } from "@apollo/client";
 import { registerApolloClient } from "@apollo/experimental-nextjs-app-support/rsc";
 import { NextSSRApolloClient, NextSSRInMemoryCache } from "@apollo/experimental-nextjs-app-support/ssr";
 
-const getClient = (accessToken?: string) => registerApolloClient(() => {
+const getServerSideClient = (accessToken?: string) => registerApolloClient(() => {
   return new NextSSRApolloClient({
     link: new HttpLink({
       uri: "http://localhost:4000/graphql",
@@ -18,4 +18,4 @@ const getClient = (accessToken?: string) => registerApolloClient(() => {
   });
 });
 
-export { getClient };
+export { getServerSideClient };

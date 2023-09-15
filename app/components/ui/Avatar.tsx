@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+'use client';
 
-import { getClient } from "@/lib/apollo-client";
-import { authOptions } from "@/lib/auth";
+import { getClientSideClient } from "@/lib/apollo-csclient";
 import { gql } from "@apollo/client";
-import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface AvatarProps {
   userId: string;
@@ -25,15 +27,24 @@ const GET_USER_INFO = gql`
   }
 `;
 
-const Avatar: React.FC<AvatarProps> = async ({ userId, isLarge, hasBorder }) => {
-  const client = getClient();
-  const session = await getServerSession(authOptions);
-  const { data, error, loading } = await client.getClient().query({
-    query: GET_USER_INFO,
-    variables: {
-      userId: userId,
-    },
-  });
+const Avatar: React.FC<AvatarProps> = ({ userId, isLarge, hasBorder }) => {
+  const { data: session } = useSession();
+  const client = getClientSideClient(session?.user.accessToken);
+  const [data, setData] = useState<UserInfo | null>();
+  const fetchUserInfo = async () => {
+    const { data } = await client.query({
+      query: GET_USER_INFO,
+      variables: {
+        userId: userId,
+      },
+    });
+    console.log(data);
+    setData(data.fetchUser);
+  }
+
+  useEffect(() => {
+    fetchUserInfo();
+  }, [userId]);
   
   return (
     <div
@@ -48,7 +59,7 @@ const Avatar: React.FC<AvatarProps> = async ({ userId, isLarge, hasBorder }) => 
         relative
       `}
     >
-      <a href={`/user/${userId}`}>
+      <a href={`/users/${userId}`}>
       <Image
         fill
         style={{
@@ -56,7 +67,7 @@ const Avatar: React.FC<AvatarProps> = async ({ userId, isLarge, hasBorder }) => 
           borderRadius: '100%'
         }}
         alt="Avatar"
-        src={data?.fetchUser?.pfp || 'https://www.gravatar.com/avatar'}
+        src={data?.pfp || 'https://www.gravatar.com/avatar'}
         />
         </a>
     </div>

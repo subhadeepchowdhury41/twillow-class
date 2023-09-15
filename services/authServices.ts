@@ -1,10 +1,9 @@
-import { getClient } from "@/lib/apollo-client";
+
+import { getServerSideClient } from "@/lib/apollo-ssclient";
 import { gql } from "@apollo/client";
 
 export const signInWithUsernameAndPassword = async (username: string, password: string) => {
-  const client = getClient();
-  console.log("Trying to sign in...........");
-  
+  const client = getServerSideClient();
   const { data  } = await client.getClient().mutate({
     mutation: gql`
       mutation SignIn($username: String!, $password: String!) {

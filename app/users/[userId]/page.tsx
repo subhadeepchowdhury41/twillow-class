@@ -1,7 +1,8 @@
-import { getClient } from "@/lib/apollo-client";
 import { authOptions } from "@/lib/auth";
 import { gql } from "@apollo/client";
 import { getServerSession } from "next-auth";
+import Button from "@/app/components/ui/Button";
+import { getServerSideClient } from "@/lib/apollo-ssclient";
 
 interface UserInfo {
   username: string;
@@ -21,10 +22,10 @@ const GET_USER = gql`
   }
 `;
 
-export default async function User({params}: {params: {userId: string}}) {
+export default async function User({ params }: { params: { userId: string } }) {
   const session = await getServerSession(authOptions);
   console.log(session?.user);
-  const client = getClient(session?.user.accessToken);
+  const client = getServerSideClient(session?.user.accessToken);
   const { data, error, loading } = await client.getClient().query({
     query: GET_USER,
     variables: {
@@ -33,8 +34,21 @@ export default async function User({params}: {params: {userId: string}}) {
   });
   return (
     <div className="h-screen bg-black text-white">
-      {params.userId}
-      {JSON.stringify(data.fetchUser)}
+      <div className="w-full relative h-52 bg-gray-500 flex items-center px-4 justify-between">
+        <div className="absolute bottom-[-80px] w-[160px] h-[160px] rounded-[50%]" style={{ backgroundImage: `url(${data.fetchUser.pfp})`, backgroundSize: '100% 100%' }}></div>
+      </div>
+      <div className="w-full h-20 flex items-center justify-end pr-4">
+        <Button  label="Follow" secondary />
+      </div>
+      <div className="w-full font-bold text-xl pt-4 px-4">
+        {data.fetchUser.name}
+      </div>
+      <div className="w-full font-[100] text-gray-500 text-[16px] px-4">
+        @{data.fetchUser.username}
+      </div>
+      <div className="w-full font-[400] text-lg pt-4 px-4">
+        {data.fetchUser.name}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
-import { getClient } from "@/lib/apollo-client";
+
+import { getServerSideClient } from "@/lib/apollo-ssclient";
 import { authOptions } from "@/lib/auth";
 import { gql } from "@apollo/client";
 import { getServerSession } from "next-auth";
@@ -15,7 +16,7 @@ const GET_USER = gql`
 
 export default async function TweetAvatar({ userId, }: { userId: string }) {
   const session = await getServerSession(authOptions);
-  const client = getClient(session?.user.accessToken);
+  const client = getServerSideClient(session?.user.accessToken);
   const { data, error, loading } = await client.getClient().query({
     query: GET_USER,
     variables: { userId }

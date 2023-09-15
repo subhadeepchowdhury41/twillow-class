@@ -1,8 +1,8 @@
-import { getClient } from "@/lib/apollo-client";
 import Avatar from "../ui/Avatar";
 import { getServerSession } from "next-auth";
 import { gql } from "@apollo/client";
 import { authOptions } from "@/lib/auth";
+import { getServerSideClient } from "@/lib/apollo-ssclient";
 
 const GET_USER = gql`
   query GetUser($id: ID!) {
@@ -17,7 +17,7 @@ const GET_USER = gql`
 
 export default async function SidebarProfile() {
   const session = await getServerSession(authOptions);
-  const client = getClient(session?.user.accessToken);
+  const client = getServerSideClient(session?.user.accessToken);
   const { data } = await client.getClient().query({
     query: GET_USER,
     variables: {

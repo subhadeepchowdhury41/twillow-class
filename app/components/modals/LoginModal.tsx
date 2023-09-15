@@ -29,8 +29,9 @@ const LoginModal = () => {
       });
 
       toast.success('Logged in');
-      redirect('/home');
       loginModal.onClose();
+      redirect('/home');
+  
     } catch (error) {
       toast.error('Something went wrong');
     } finally {

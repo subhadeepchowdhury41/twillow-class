@@ -1,8 +1,10 @@
-import { getClient } from "@/lib/apollo-client";
+
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import TweetComponent from "../components/tweet/TweetComponent";
 import { gql } from "@apollo/client";
+import PostTweetForm from "../components/tweet/PostTweetForm";
+import { getServerSideClient } from "@/lib/apollo-ssclient";
 
 const GET_ALL_POSTS = gql`
   query GetAllPosts {
@@ -21,8 +23,7 @@ const GET_ALL_POSTS = gql`
 export default async function Home() {
   const session = await getServerSession(authOptions);
   console.log(session?.user);
-
-  const client = getClient(session?.user.accessToken);
+  const client = getServerSideClient(session?.user.accessToken);
   const { data, error, loading } = await client.getClient().query({
     query: GET_ALL_POSTS,
   });
@@ -57,6 +58,7 @@ export default async function Home() {
           </div>
         </div>
       </div>
+      <PostTweetForm userId={session?.user.id!} />
       {
         (data.listTweets).map((tweet: any, index: number) => {
           return (
