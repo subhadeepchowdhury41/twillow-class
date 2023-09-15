@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { toast } from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 import TextInput from "../ui/TextInput";
 import Modal from "../ui/Modal";
@@ -28,7 +29,7 @@ const LoginModal = () => {
       });
 
       toast.success('Logged in');
-
+      redirect('/home');
       loginModal.onClose();
     } catch (error) {
       toast.error('Something went wrong');

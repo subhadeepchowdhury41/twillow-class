@@ -1,9 +1,9 @@
-"use client"
-import React, { useCallback } from 'react';
 import { IconType } from "react-icons";
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { BsDot } from 'react-icons/bs';
+import useLoginModal from '@/app/hooks/useLoginModal';
+import Link from "next/link";
 
 interface SidebarItemProps {
   label: string;
@@ -14,27 +14,22 @@ interface SidebarItemProps {
   alert?: boolean;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ label, icon: Icon, href, auth, onClick, alert }) => {
-  const router = useRouter();
-  // const loginModal = useLoginModal();
+const SidebarItem: React.FC<SidebarItemProps> = async ({ label, icon: Icon, href, auth, onClick, alert }) => {
+  // const handleClick = async () => {
+  //   if (onClick) {
+  //     return onClick();
+  //   }
 
-  // const { currentUser } = useUserContext();
+  //   if (auth) {
+  //     // loginModal.onOpen();
 
-  const handleClick = useCallback(() => {
-    if (onClick) {
-      return onClick();
-    }
-
-    if (auth) {
-      // loginModal.onOpen();
-    } else if (href) {
-      router.push(href);
-    }
-  }, [router, href, auth, onClick, ]);
+  //   }
+  // };
 
   return (
-    <div onClick={handleClick} className="flex flex-row items-center">
-      <div className="
+    <Link href={href!}>
+      <div className="flex flex-row items-center">
+        <div className="
         relative
         rounded-full 
         h-14
@@ -48,10 +43,10 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ label, icon: Icon, href, auth
         cursor-pointer 
         lg:hidden
       ">
-        <Icon size={28} color="white" />
-        {alert ? <BsDot className="text-sky-500 absolute -top-4 left-0" size={70} /> : null}
-      </div>
-      <div className="
+          <Icon size={28} color="white" />
+          {alert ? <BsDot className="text-sky-500 absolute -top-4 left-0" size={70} /> : null}
+        </div>
+        <div className="
         relative
         hidden 
         lg:flex 
@@ -64,13 +59,14 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ label, icon: Icon, href, auth
         cursor-pointer
         items-center
       ">
-        <Icon size={24} color="white" />
-        <p className="hidden lg:block text-white text-xl">
-          {label}
-        </p>
-        {alert ? <BsDot className="text-sky-500 absolute -top-4 left-0" size={70} /> : null}
+          <Icon size={24} color="white" />
+          <p className="hidden lg:block text-white text-xl">
+            {label}
+          </p>
+          {alert ? <BsDot className="text-sky-500 absolute -top-4 left-0" size={70} /> : null}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

@@ -37,7 +37,7 @@ export default async function TweetComponent({
             width={300}
             height={300}
             key={m}
-            src={"https://pbs.twimg.com/media/F5930EzasAAQDVn?format=jpg&name=small"}
+            src={m}
             alt="Tweet media"
             className="
               cursor-pointer

@@ -57,9 +57,6 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      {/* <PostTweetForm userId={session?.user.id!} onSubmit={(payload: any) => {
-        
-      }}/> */}
       {
         (data.listTweets).map((tweet: any, index: number) => {
           return (

@@ -23,8 +23,9 @@ export const authOptions: NextAuthOptions = {
           credentials!.username,
           credentials!.password
         );
-        return response;
-      },
+        console.log("============>",response);
+        return {...credentials, ...response};
+      }
     }),
   ],
   callbacks: {

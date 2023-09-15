@@ -49,11 +49,11 @@ const SidebarTweetButton = () => {
       ">
         <p
           className="
-            hidden 
+            hidden
             lg:block 
             text-center
             font-semibold
-            text-white 
+            text-white
             text-[20px]
         ">
           Tweet

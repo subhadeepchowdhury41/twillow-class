@@ -3,7 +3,6 @@ import './globals.css'
 import type { Metadata } from 'next';
 import { authOptions } from '@/lib/auth';
 import Provider from './providers/sessionProvider';
-import ProtectedRoute from './protected';
 import LoginModal from './components/modals/LoginModal';
 import RegisterModal from './components/modals/RegisterModal';
 
