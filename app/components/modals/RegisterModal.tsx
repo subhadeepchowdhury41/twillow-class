@@ -9,7 +9,35 @@ import TextInput from "../ui/TextInput";
 import Modal from "../ui/Modal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { signUp } from "@/services/authServices";
+import { getClientSideClient } from "@/lib/apollo-csclient";
+import { gql } from "@apollo/client";
+
+const CREATE_USER = gql`
+  mutation CreateUser($username: String!, $password: String!, $email: String!, $name: String!) {
+    createUser(username: $username, password: $password, email: $email, name: $name) {
+      _id
+    }
+  }
+`;
+
+const signUp = async (
+  username: string,
+  password: string,
+  email: string,
+  name: string
+) => {
+  const client = getClientSideClient();
+  const { data } = await client.mutate({
+    mutation: CREATE_USER,
+    variables: {
+      username,
+      password,
+      email,
+      name
+    },
+  });
+  return data;
+};
 
 const RegisterModal = () => {
   const loginModal = useLoginModal();
