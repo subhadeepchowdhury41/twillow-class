@@ -5,7 +5,7 @@ import Avatar from "../ui/Avatar";
 import Button from "../ui/Button";
 import TextInput from "../ui/TextInput";
 import { TfiImage } from "react-icons/tfi";
-import { followUser, postTweet } from "@/services/tweetServices";
+import { postTweet } from "@/services/tweetServices";
 import { useSession } from "next-auth/react";
 
 const PostTweetForm = ({
@@ -14,6 +14,7 @@ const PostTweetForm = ({
   const { data: session } = useSession();
   const [text, setText] = useState('');
   const [media, setMedia] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   return (<div className="flex">
     <div className="flex items-center flex-col w-full h-36">
       <div className="w-full h-full flex-[2] flex items-center px-4 gap-2">

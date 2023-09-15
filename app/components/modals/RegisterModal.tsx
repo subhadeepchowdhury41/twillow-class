@@ -9,17 +9,7 @@ import TextInput from "../ui/TextInput";
 import Modal from "../ui/Modal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
-import { gql, useMutation } from "@apollo/client";
-
-const CREATE_USER = gql`
-  mutation CreateUser($username: String!, $name: String!, $email: String!, $password: String) {
-    createUser(input: $input) {
-      _id
-      username
-      name
-    }
-  }
-`;
+import { signUp } from "@/services/authServices";
 
 const RegisterModal = () => {
   const loginModal = useLoginModal();
@@ -43,14 +33,7 @@ const RegisterModal = () => {
   const onSubmit = useCallback(async () => {
     try {
       setIsLoading(true);
-      
-      await fetch('http://localhost:4000/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({CREATE_USER})
-      })
+      await signUp(username, name, email, password);
       setIsLoading(false)
       toast.success('Account created.');
 
