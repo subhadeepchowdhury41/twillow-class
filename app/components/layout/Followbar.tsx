@@ -43,7 +43,7 @@ const FollowBar = () => {
       </div> */}
         {data.map((index) => {
           return (
-            <div className="w-full h-16 bg-neutral-800 pt-4 flex gap-2">
+            <div key={index.index} className="w-full h-16 bg-neutral-800 pt-4 flex gap-2">
               <div className="w-full flex-[1] h-full rounded-[50%] bg-gray-500"></div>
               <div className="w-full h-full flex-[5] flex flex-col">
                 <div className="font-semibold text-lg text-[rgba(255,255,255,0.9)]">{index.name}</div>
