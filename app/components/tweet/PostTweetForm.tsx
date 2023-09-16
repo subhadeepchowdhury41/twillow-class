@@ -28,7 +28,7 @@ const PostTweetForm = ({
         let form: FormData = new FormData();
         form.append('file', file);
         axios.post(
-          'http://localhost:4000/upload',
+          'https://busy-gray-shrimp-suit.cyclic.cloud/upload',
           form,
           {
             headers: {

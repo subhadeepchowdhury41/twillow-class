@@ -4,15 +4,16 @@ interface TextInputProps {
   noborder?: boolean;
   type?: string;
   disabled?: boolean;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   label?: string;
+  multiline?: boolean;
 }
 
-const TextInput: React.FC<TextInputProps> = ({ placeholder, noborder, value, type = "text", onChange, disabled, label }) => {
+const TextInput: React.FC<TextInputProps> = ({ placeholder, multiline, noborder, value, type = "text", onChange, disabled, label }) => {
   return (
     <div className="w-full">
       {label && <p className="text-xl text-white font-semibold mb-2">{label}</p>}
-      <input
+      {!multiline ? <input
         disabled={disabled}
         onChange={onChange}
         value={value}
@@ -35,9 +36,33 @@ const TextInput: React.FC<TextInputProps> = ({ placeholder, noborder, value, typ
           disabled:opacity-70
           disabled:cursor-not-allowed
         `}
-      />
+      /> :
+        <textarea
+          disabled={disabled}
+          onChange={onChange}
+          value={value}
+          placeholder={placeholder}
+          className={`
+        w-full
+        p-4 
+        text-lg 
+        bg-black 
+        ${noborder ? '' : 'border-2 focus:border-2'}
+        border-neutral-800 
+        rounded-md
+        outline-none
+        text-white
+        focus:border-sky-500
+        
+        transition
+        disabled:bg-neutral-900
+        disabled:opacity-70
+        disabled:cursor-not-allowed
+      `}
+        />
+      }
     </div>
-   );
+  );
 }
- 
+
 export default TextInput;

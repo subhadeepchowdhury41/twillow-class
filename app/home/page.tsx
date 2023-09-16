@@ -62,7 +62,14 @@ export default async function Home() {
       {
         (data.listTweets).map((tweet: any, index: number) => {
           return (
-            <TweetComponent key={index} text={tweet.text} author={tweet.author._id} dateTime={tweet.dateTime} media={tweet.media} />
+            <TweetComponent
+              id={tweet._id}
+              key={index}
+              text={tweet.text}
+              author={tweet.author._id}
+              dateTime={tweet.dateTime}
+              media={tweet.media}
+            />
           );
         })
       }

@@ -3,7 +3,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 const getClientSideClient = (accessToken?: string) => {
   return new ApolloClient({
     link: new HttpLink({
-      uri: "http://localhost:4000/graphql",
+      uri: "https://busy-gray-shrimp-suit.cyclic.cloud/graphql",
       headers: {
         'Authorization': `Bearer ${accessToken}`
       },

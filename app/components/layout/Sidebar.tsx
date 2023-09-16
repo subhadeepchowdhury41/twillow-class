@@ -1,4 +1,4 @@
-import { BsBellFill, BsEnvelopeFill, BsHouseFill } from 'react-icons/bs';
+import { BsBellFill, BsFillPersonFill, BsHouseFill } from 'react-icons/bs';
 import { BiLogOut } from 'react-icons/bi';
 import SidebarLogo from './SidebarLogo';
 import SidebarItem from './SidebarItem';
@@ -23,7 +23,7 @@ const Sidebar = async () => {
       alert: false
     },
     {
-      icon: BsEnvelopeFill,
+      icon: BsFillPersonFill,
       label: 'Profile',
       href: `/users/${session?.user.id}`,
       auth: true,

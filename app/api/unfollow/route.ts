@@ -1,12 +1,13 @@
-import { getClient } from "@/lib/apollo-client";
+import { getServerSideClient } from "@/lib/apollo-ssclient";
 import { gql } from "@apollo/client";
+import { NextResponse } from "next/server";
 
-export const followUser = async (userId: string, followerId: string, token: string) => {
-  const client = getClient(token);
+export default async function POST(userId: string, followerId: string, token: string) {
+  const client = getServerSideClient();
   const { data } = await client.getClient().mutate({
     mutation: gql`
       mutation FollowUser($userId: String!, $followerId: String!) {
-        followUser(userId: $userId, followerId: $followerId) {
+        unfollowUser(userId: $userId, followerId: $followerId) {
           followings {
             _id
           }
@@ -21,5 +22,5 @@ export const followUser = async (userId: string, followerId: string, token: stri
       followerId
     },
   });
-  return data;
+  return NextResponse.json(data);
 }

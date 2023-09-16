@@ -4,13 +4,6 @@ import { getServerSession } from "next-auth";
 import { getServerSideClient } from "@/lib/apollo-ssclient";
 import ActionButton from "@/app/components/users/ActionButton";
 
-interface UserInfo {
-  username: string;
-  name: string;
-  pfp: string;
-  bio: string;
-}
-
 const GET_USER = gql`
   query GetUser($id: ID!) {
     fetchUser(id: $id) {
@@ -47,8 +40,9 @@ export default async function User({ params }: { params: { userId: string } }) {
         @{data.fetchUser.username}
       </div>
       <div className="w-full font-[400] text-lg pt-4 px-4">
-        {data.fetchUser.name}
+        {data.fetchUser.bio}
       </div>
+      {}
     </div>
   );
 }

@@ -1,84 +1,90 @@
-import { useCallback, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+'use client';
 
-import ImageUpload from "../ui/ImageUpload";
+import { Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import TextInput from "../ui/TextInput";
-import Modal from "../ui/Modal";
-import { useUserContext } from "@/app/providers/userProvider";
+import { useEffect, useState } from "react";
+import { fetchUser, updateUser } from "@/services/userServicesClient";
+import { useSession } from "next-auth/react";
+import Button from "../ui/Button";
 
-const EditModal = () => {
-  const { currentUser } = useUserContext();
-  const { mutate: mutateFetchedUser } = useUser(currentUser?.id);
-  const editModal = useEditModal();
-
+const EditModal = ({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) => {
+  const { data: session } = useSession();
   const [profileImage, setProfileImage] = useState('');
-  const [coverImage, setCoverImage] = useState('');
   const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
   const [bio, setBio] = useState('');
+  const fetchUserInfo = async () => {
+    setIsLoading(true);
+    const res = await fetchUser(
+      session?.user.id!,
+      session?.user.accessToken!
+    );
+    setName(res.name);
+    setBio(res.bio);
+    setProfileImage(res.pfp);
+    setIsLoading(false);
+    // setCoverImage(res.coverImage);
+  }
 
-  useEffect(() => {
-    setProfileImage(currentUser?.profileImage)
-    setCoverImage(currentUser?.coverImage)
-    setName(currentUser?.name)
-    setUsername(currentUser?.username)
-    setBio(currentUser?.bio)
-  }, [currentUser?.name, currentUser?.username, currentUser?.bio, currentUser?.profileImage, currentUser?.coverImage]);
-  
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = useCallback(async () => {
-    try {
-      setIsLoading(true);
-
-      await axios.patch('/api/edit', { name, username, bio, profileImage, coverImage });
-      mutateFetchedUser();
-
-      toast.success('Updated');
-
-      editModal.onClose();
-    } catch (error) {
-      toast.error('Something went wrong');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [editModal, name, username, bio, mutateFetchedUser, profileImage, coverImage]);
-
-  const bodyContent = (
-    <div className="flex flex-col gap-4">
-      <ImageUpload value={profileImage} disabled={isLoading} onChange={(image) => setProfileImage(image)} label="Upload profile image" />
-      <ImageUpload value={coverImage} disabled={isLoading} onChange={(image) => setCoverImage(image)} label="Upload cover image" />
-      <TextInput
-        placeholder="Name"
-        onChange={(e) => setName(e.target.value)}
-        value={name}
-        disabled={isLoading}  
-      />
-      <TextInput 
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-        value={username}
-        disabled={isLoading} 
-      />
-      <TextInput 
-        placeholder="Bio"
-        onChange={(e) => setBio(e.target.value)}
-        value={bio}
-        disabled={isLoading} 
-      />
-    </div>
-  )
+  useEffect(() => {
+    fetchUserInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <Modal
-      disabled={isLoading}
-      isOpen={editModal.isOpen}
-      title="Edit your profile"
-      actionLabel="Save"
-      onClose={editModal.onClose}
-      onSubmit={onSubmit}
-      body={bodyContent}
-    />
+    <Dialog
+      sx={{
+        '& .MuiDialog-paper': {
+          backgroundColor: 'black',
+          color: 'white',
+          borderRadius: '20px',
+          width: '500px',
+          border: '1px solid rgba(255,255,255,0.1)',
+          boxShadow: '0px 0px 10px 0px rgba(255,255,255,0.1)',
+          padding: '20px',
+        }
+      }}
+      open={open} onClose={() => setOpen(false)}>
+      <DialogTitle sx={{
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: '24px',
+      }}>Edit Profile</DialogTitle>
+      <DialogContent>
+        <div className="flex flex-col gap-4">
+          <TextInput
+            placeholder="Name"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            disabled={isLoading}
+          />
+          <TextInput
+            placeholder="Bio"
+            onChange={(e) => setBio(e.target.value)}
+            value={bio}
+            disabled={isLoading}
+          />
+        </div>
+      </DialogContent>
+      <DialogActions>
+        <Button label="Cancel" outline onClick={() => setOpen(false)} />
+        <Button label="Save" onClick={async () => {
+          setIsLoading(true);
+          await updateUser(
+            session?.user.id!,
+            name,
+            bio,
+            profileImage,
+            session?.user.accessToken!
+          ).then(() => {
+            setIsLoading(false);
+            setOpen(false);
+            window.location.reload();
+          })
+        }} />
+      </DialogActions>
+    </Dialog>
   );
 }
 

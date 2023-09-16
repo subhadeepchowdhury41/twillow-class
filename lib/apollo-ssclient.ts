@@ -5,7 +5,7 @@ import { NextSSRApolloClient, NextSSRInMemoryCache } from "@apollo/experimental-
 const getServerSideClient = (accessToken?: string) => registerApolloClient(() => {
   return new NextSSRApolloClient({
     link: new HttpLink({
-      uri: "http://localhost:4000/graphql",
+      uri: "https://busy-gray-shrimp-suit.cyclic.cloud/graphql",
       headers: {
         'Authorization': `Bearer ${accessToken}`
       },

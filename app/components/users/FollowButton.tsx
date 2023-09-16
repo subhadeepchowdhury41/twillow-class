@@ -1,19 +1,26 @@
-import { getServerSideClient } from "@/lib/apollo-ssclient";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
-import Button from "../ui/Button";
-import { followUser } from "@/services/userServices";
+'use client';
 
-export async function FollowButton({
+import { useSession } from "next-auth/react";
+import Button from "../ui/Button";
+import { followUser } from "@/services/userServicesClient";
+
+export function FollowButton({
   followerId,
 }: {
   followerId: string
-}) {
-  const session = await getServerSession(authOptions);
-  const client = getServerSideClient(session?.user.accessToken);
+  }) {
+  const {data: session} = useSession();
   return (
     <a>
-      <Button label="Follow" secondary />
+      <Button onClick={async () => {
+        await followUser(
+          session?.user.id!,
+          followerId,
+          session?.user.accessToken!
+        ).then(() => {
+          window.location.reload();
+        });
+      }} label="Follow" secondary />
     </a>
   );
 }
