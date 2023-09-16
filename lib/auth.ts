@@ -23,18 +23,16 @@ export const authOptions: NextAuthOptions = {
           credentials!.username,
           credentials!.password
         );
-        console.log("============>",response);
-        return {...credentials, ...response};
+        console.log("============>", response);
+        return { ...credentials, ...response };
       }
     }),
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
-      // console.log('JWT ===============>', token, user);
       return { ...token, ...user }
     },
     session: async ({ session, token, user }) => {
-      // console.log('SESSION ===============>', session, token, user);
       session.user = token as any;
       return session;
     }

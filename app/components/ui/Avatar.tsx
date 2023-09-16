@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { getClientSideClient } from "@/lib/apollo-csclient";
@@ -44,6 +43,7 @@ const Avatar: React.FC<AvatarProps> = ({ userId, isLarge, hasBorder }) => {
 
   useEffect(() => {
     fetchUserInfo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
   
   return (

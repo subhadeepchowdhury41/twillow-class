@@ -21,8 +21,8 @@ export const getUserFollowings = async (accessToken: string) => {
 }
 
 export const checkFollowing = async (userId: string, followerId: string, token: string) => {
-  const client = getClientSideClient(token);
-  const {data} = await client.query({
+  const client = getServerSideClient(token);
+  const {data} = await client.getClient().query({
     query: gql`
       query($userId: String!) {
         fetchUser(id: $userId) {
@@ -38,12 +38,14 @@ export const checkFollowing = async (userId: string, followerId: string, token: 
     },
   });
   let followings = data.fetchUser.followings as any[];
+  console.log(followings);
+  
   return followings.findIndex((following: any) => following._id === followerId) !== -1;
 }
 
 export const followUser = async (userId: string, followerId: string, token: string) => {
-  const client = getClientSideClient(token);
-  const { data } = await client.mutate({
+  const client = getServerSideClient(token);
+  const { data } = await client.getClient().mutate({
     mutation: gql`
       mutation FollowUser($userId: String!, $followerId: String!) {
         followUser(userId: $userId, followerId: $followerId) {

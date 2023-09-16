@@ -20,7 +20,7 @@ export default async function TweetComponent({
     <div>
       <Avatar userId={author} />
     </div>
-    <div>
+    <div className="w-full h-full">
       <div className="flex items-center">
         <TweetAvatar userId={author} />
         <div className="mx-1">
@@ -31,19 +31,19 @@ export default async function TweetComponent({
         </h2>
       </div>
       <h1>{text}</h1>
-      <div>
+      <div className="w-full">
         {media?.map((m) => (
-          <Image
-            width={300}
-            height={300}
+          <div
             key={m}
-            src={m}
-            alt="Tweet media"
+            style={{
+              backgroundImage: `url(${m})`,
+              backgroundSize: 'contain',
+            }}
             className="
               cursor-pointer
               w-full
               my-2
-              h-auto
+              aspect-square
               rounded-xl
               border-stone-600
               border-[0.7px]
@@ -51,6 +51,7 @@ export default async function TweetComponent({
           />
         ))}
       </div>
+
     </div>
   </div>);
 }

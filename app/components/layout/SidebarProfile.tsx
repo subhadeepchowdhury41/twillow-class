@@ -29,7 +29,7 @@ export default async function SidebarProfile() {
       <div>
         <Avatar userId={session?.user.id!} />
       </div>
-      <div className="flex flex-col justify-center">
+      <div className="lg:flex hidden flex-col justify-center">
         <div className="text-white font-extrabold w-40 truncate">
           {data?.fetchUser.name}
         </div>

@@ -1,5 +1,4 @@
 'use client';
-/* eslint-disable react-hooks/exhaustive-deps */
 
 import { toast } from "react-hot-toast";
 import { useCallback, useState } from "react";
@@ -11,6 +10,7 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { getClientSideClient } from "@/lib/apollo-csclient";
 import { gql } from "@apollo/client";
+import { redirect } from "next/navigation";
 
 const CREATE_USER = gql`
   mutation CreateUser($username: String!, $password: String!, $email: String!, $name: String!) {
@@ -26,8 +26,10 @@ const signUp = async (
   email: string,
   name: string
 ) => {
+  console.log('SIGINING UP================>');
+
   const client = getClientSideClient();
-  const { data } = await client.mutate({
+  const { data, errors } = await client.mutate({
     mutation: CREATE_USER,
     variables: {
       username,
@@ -36,6 +38,10 @@ const signUp = async (
       name
     },
   });
+  console.log(errors, data);
+
+  console.log('SIGNED UP!!!!!!!!!!!!!!');
+
   return data;
 };
 
@@ -59,17 +65,19 @@ const RegisterModal = () => {
   }, [loginModal, registerModal, isLoading]);
 
   const onSubmit = useCallback(async () => {
+    console.log('SUBMITTING');
+
     try {
       setIsLoading(true);
-      await signUp(username, name, email, password);
-      setIsLoading(false)
-      toast.success('Account created.');
-
-      signIn('credentials', {
-        username,
-        password,
+      await signUp(username, password, email, name).then(async (res) => {
+        await signIn('credentials', {
+          username,
+          password,
+        });
       });
+      toast.success('Account created.');
       registerModal.onClose();
+      redirect('/home');
     } catch (error) {
       toast.error('Something went wrong');
     } finally {

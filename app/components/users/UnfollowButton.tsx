@@ -2,9 +2,9 @@ import { getServerSideClient } from "@/lib/apollo-ssclient";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import Button from "../ui/Button";
-import { followUser } from "@/services/userServices";
+import { unfollowUser } from "@/services/userServices";
 
-export async function FollowButton({
+export async function UnfollowButton({
   followerId,
 }: {
   followerId: string
@@ -13,7 +13,7 @@ export async function FollowButton({
   const client = getServerSideClient(session?.user.accessToken);
   return (
     <a>
-      <Button label="Follow" secondary />
+      {/* <Button label="Follow" secondary /> */}
     </a>
   );
 }

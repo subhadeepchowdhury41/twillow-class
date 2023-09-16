@@ -1,8 +1,8 @@
 import { authOptions } from "@/lib/auth";
 import { gql } from "@apollo/client";
 import { getServerSession } from "next-auth";
-import Button from "@/app/components/ui/Button";
 import { getServerSideClient } from "@/lib/apollo-ssclient";
+import ActionButton from "@/app/components/users/ActionButton";
 
 interface UserInfo {
   username: string;
@@ -38,7 +38,7 @@ export default async function User({ params }: { params: { userId: string } }) {
         <div className="absolute bottom-[-80px] w-[160px] h-[160px] rounded-[50%]" style={{ backgroundImage: `url(${data.fetchUser.pfp})`, backgroundSize: '100% 100%' }}></div>
       </div>
       <div className="w-full h-20 flex items-center justify-end pr-4">
-        <Button  label="Follow" secondary />
+        <ActionButton followerId={params.userId} />
       </div>
       <div className="w-full font-bold text-xl pt-4 px-4">
         {data.fetchUser.name}
