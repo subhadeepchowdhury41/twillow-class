@@ -4,8 +4,14 @@ import Image from "next/image";
 import Button from "./components/ui/Button";
 import useLoginModal from "./hooks/useLoginModal";
 import useRegisterModal from "./hooks/useRegisterModal";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  const { data: session } = useSession();
+  if (session?.user.accessToken !== null && session?.user.accessToken !== undefined) {
+    redirect('/home');
+  }
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   return (

@@ -5,7 +5,6 @@ import { authOptions } from '@/lib/auth';
 import Provider from './providers/sessionProvider';
 import LoginModal from './components/modals/LoginModal';
 import RegisterModal from './components/modals/RegisterModal';
-import EditModal from './components/modals/EditModal';
 
 export const metadata: Metadata = {
   title: 'Twillow Class',
@@ -18,6 +17,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions);
+  
   return (
     <html lang="en">
       <body>

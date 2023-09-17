@@ -44,7 +44,7 @@ const Sidebar = async () => {
               label={item.label}
             />
           ))}
-          {session?.user && <SidebarItem icon={BiLogOut} label="Logout" href='/' />}
+          {session?.user && <SidebarItem icon={BiLogOut} label="Logout" href='/api/auth/signout' />}
           <SidebarTweetButton />
         </div>
         <SidebarProfile />

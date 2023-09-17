@@ -73,6 +73,7 @@ const RegisterModal = () => {
         await signIn('credentials', {
           username,
           password,
+          callbackUrl: '/home',
         });
       });
       toast.success('Account created.');
