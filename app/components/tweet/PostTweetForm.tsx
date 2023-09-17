@@ -47,7 +47,7 @@ const PostTweetForm = ({
 
   return (<div className="flex border-b-[1px]
   p-2 border-neutral-800" >
-    <div className="flex items-center flex-col w-full h-36 ">
+    <div className="flex items-center flex-col w-full  ">
       <div className="w-full h-full flex-[2] flex items-center px-2 gap-2">
         <Avatar userId={userId} />
         <TextInput noborder
